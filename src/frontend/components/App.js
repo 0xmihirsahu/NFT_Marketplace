@@ -12,6 +12,8 @@ import MarketplaceAbi from '../contractsData/Marketplace.json'
 import MarketplaceAddress from '../contractsData/Marketplace-address.json'
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
+import Lottie from "lottie-react";
+import connectAnimation from '../assets/connectWalletAnimation.json'
 import { useState } from 'react'
 import { ethers } from "ethers"
 import { Spinner } from 'react-bootstrap'
@@ -23,13 +25,11 @@ function App() {
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
   const [marketplace, setMarketplace] = useState({})
-  // MetaMask Login/Connect
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     setAccount(accounts[0])
-    // Get provider from Metamask
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    // Set signer
+
     const signer = provider.getSigner()
 
     window.ethereum.on('chainChanged', (chainId) => {
@@ -43,7 +43,6 @@ function App() {
     loadContracts(signer)
   }
   const loadContracts = async (signer) => {
-    // Get deployed copies of contracts
     const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
     setMarketplace(marketplace)
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
@@ -59,9 +58,12 @@ function App() {
         </>
         <div>
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-              <Spinner animation="border" style={{ display: 'flex' }} />
-              <p className='mx-3 my-0'>Awaiting Metamask Connection...</p>
+            <div>
+            <div className="ml-5" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '70vb', height: '70vh', marginLeft:'30rem' }}>
+              <Lottie animationData={connectAnimation} />
+              
+            </div>
+            <p className="headings" style={{fontWeight:'500'}}>Connect Your Wallet...</p>
             </div>
           ) : (
             <Routes>

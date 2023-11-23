@@ -2,24 +2,24 @@ import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
 
+import video from './bg-vid.mp4'
+
 const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [currentText, setCurrentText] = useState('');
+  const phrases = ['Mint Your NFTs!', 'List Your NFTs!', 'Buy Any NFTs!', 'Sell Your NFTs!', 'Trade Any NFTs!'];
   const loadMarketplaceItems = async () => {
-    // Load all unsold items
     const itemCount = await marketplace.itemCount()
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
       if (!item.sold) {
-        // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)
-        // use uri to fetch the nft metadata stored on ipfs 
         const response = await fetch(uri)
         const metadata = await response.json()
-        // get total price of item (item price + fee)
         const totalPrice = await marketplace.getTotalPrice(item.itemId)
-        // Add item to items array
         items.push({
           totalPrice,
           itemId: item.itemId,
@@ -40,8 +40,25 @@ const Home = ({ marketplace, nft }) => {
   }
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (currentText.length < phrases[currentPhraseIndex].length) {
+        setCurrentText((prevText) => prevText + phrases[currentPhraseIndex][currentText.length]);
+      } else {
+        clearInterval(intervalId); 
+        setTimeout(() => {
+          setCurrentText('');
+          setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        }, 1800); 
+      }
+    }, 160);
+  
+    return () => clearInterval(intervalId);
+  }, [currentText, currentPhraseIndex]);
+  
+  useEffect(() => {
     loadMarketplaceItems()
   }, [])
+
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <h2>Loading...</h2>
@@ -49,12 +66,22 @@ const Home = ({ marketplace, nft }) => {
   )
   return (
     <div className="flex justify-center">
+      <div className='flex-column justify-center vid-container'>
+      <h1 className='p-4 mb-4 banner-text'>
+        You can <span>{currentText}<span className='cursory'></span></span>
+      </h1>
+      <video muted autoPlay loop width="100%" height="100%" preload="auto" id="bg-main">
+        <source src={video} type="video/mp4" />
+      </video>
+      </div>
+      
       {items.length > 0 ?
         <div className="px-5 container">
+          <h3 className='headings'>Items</h3>
           <Row xs={1} md={2} lg={4} className="g-4 py-5">
             {items.map((item, idx) => (
               <Col key={idx} className="overflow-hidden">
-                <Card>
+                <Card bg='dark' key='Dark' text='white' border='light' className='rounded'>
                   <Card.Img variant="top" src={item.image} />
                   <Card.Body color="secondary">
                     <Card.Title>{item.name}</Card.Title>
