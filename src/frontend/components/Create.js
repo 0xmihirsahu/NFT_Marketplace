@@ -5,8 +5,8 @@ import axios from 'axios';
 import Lottie from "lottie-react";
 import mintingAnimation from '../assets/mintingAnimation.json'
 
-const apiKey = '7eaa00c9e1ef62ce3e22';
-const apiSecret = '28aec9f9431d514717a2b357c5f4b444a6a773f7c40f00bc7bc622cd648305db';
+const apiKey = '';
+const apiSecret = '';
 
 const Create = ({ marketplace, nft }) => {
   const [image, setImage] = useState('');
