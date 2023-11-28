@@ -57,6 +57,8 @@ const Create = ({ marketplace, nft }) => {
             description,
           },
           pinataContent: {
+            name,
+            description,
             image,
             price,
           },
@@ -140,7 +142,7 @@ const Create = ({ marketplace, nft }) => {
       </div>
       {/* Conditional rendering of the animation based on the state */}
       {isMinting && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1, backdropFilter: 'blur(2px)' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1, backdropFilter: 'blur(2px) brightness(70%)'}}>
           <div style={{backgroundColor: '#393E46', borderRadius: '38px', backdropFilter: 'blur(50px)', padding:'1rem' }}>
           <Lottie animationData={mintingAnimation} style={{paddingLeft: '3.5rem', paddingRight: '3rem'}}/>
           <p style={{fontSize: '2.3rem', fontWeight: '600', color: '#00FFF5' }}>Minting NFT...</p>

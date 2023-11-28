@@ -16,7 +16,6 @@ import Lottie from "lottie-react";
 import connectAnimation from '../assets/connectWalletAnimation.json'
 import { useState } from 'react'
 import { ethers } from "ethers"
-import { Spinner } from 'react-bootstrap'
 
 import './App.css';
 
@@ -59,9 +58,8 @@ function App() {
         <div>
           {loading ? (
             <div>
-            <div className="ml-5" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '70vb', height: '70vh', marginLeft:'30rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '65vb', height: '65vh', marginLeft:'33rem', marginTop: '2rem' }}>
               <Lottie animationData={connectAnimation} />
-              
             </div>
             <p className="headings" style={{fontWeight:'500'}}>Connect Your Wallet...</p>
             </div>
